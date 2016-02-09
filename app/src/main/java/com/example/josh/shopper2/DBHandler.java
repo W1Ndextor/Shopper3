@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHandler extends SQLiteOpenHelper {
 
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 4;
     private static final String DATABASE_NAME = "shopper.db";
 
 
@@ -51,7 +51,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 COLUMN_ITEM_NAME + " TEXT," +
                 COLUMN_ITEM_PRICE + " DECIMAL(10,2)," +
                 COLUMN_ITEM_QUANTITY + " INTEGER," +
-                COLUMN_ITEM_HAS + " Text," +
+                COLUMN_ITEM_HAS + " TEXT," +
                 COLUMN_ITEM_LIST_ID + " INTEGER" +
                 ");";
 
@@ -62,9 +62,10 @@ public class DBHandler extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOPPING_LIST);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOPPING_LIST_ITEM);
         onCreate(db);
 
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOPPING_LIST_ITEM);
+
     }
 
     public void addShoppingList(String name, String store, String date){

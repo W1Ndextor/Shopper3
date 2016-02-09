@@ -40,53 +40,56 @@ public class AddItem extends AppCompatActivity {
         quantityEditText = (EditText) findViewById(R.id.quantityEditText);
 
 
-
         dbHandler = new DBHandler(this, null);
 
 
     }
 
 
-
-    public void addItem(MenuItem menuItem){
+    public void addItem(MenuItem menuItem) {
 
         String name = nameEditText.getText().toString();
         String price = priceEditText.getText().toString();
         String quantity = quantityEditText.getText().toString();
 
 
-
-        if(name.trim().equals("") || price.trim().equals("") || quantity.trim().equals("")){
+        if (name.trim().equals("") || price.trim().equals("") || quantity.trim().equals("")) {
             Toast.makeText(this, "Please enter a name, price, and quantity!", Toast.LENGTH_LONG).show();
         } else {
             dbHandler.addItemToShoppingList(name, Double.parseDouble(price), Integer.parseInt(quantity), (int) id);
             Toast.makeText(this, "Item Added!", Toast.LENGTH_LONG).show();
         }
-}
+    }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_add_item, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        case R.id.action_home :
-        intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        return true;
+        switch (item.getItemId()) {
+            case R.id.action_home:
+                intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                return true;
 
-        case R.id.action_create_list(this, CreateList.class) :
-        intent = new Intent(this, CreateList.class);
-        startActivity(intent);
-        return true;
+            case R.id.action_create_list:
+                intent = new Intent(this, CreateList.class);
+                startActivity(intent);
+                return true;
 
-        case R.id.action_add_item :
-        intent = new Intent(this, AddItem.class);
-        intent.putExtra("_id",id);
-       // startActivity(intent);
-        //return true;
+            case R.id.action_add_item:
+                intent = new Intent(this, AddItem.class);
+                intent.putExtra("_id", id);
+                startActivity(intent);
+                return true;
+
+            default : return super.onOptionsItemSelected(item);
+        }
     }
+
+
 
 }
