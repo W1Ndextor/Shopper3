@@ -1,6 +1,7 @@
 package com.example.josh.shopper2;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 
 public class ViewList extends AppCompatActivity {
 
@@ -17,11 +19,15 @@ public class ViewList extends AppCompatActivity {
     DBHandler dbHandler;
     String shoppingListName;
     Intent intent;
+    ShoppingListItems shoppingListItemsAdapter;
+    ListView itemsListView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_list);
+        setContentView(R.
+                layout.activity_view_list);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -32,12 +38,19 @@ public class ViewList extends AppCompatActivity {
 
         id = bundle.getLong("_id");
 
-        shoppingListName = dbHandler.getShoppingListName((int) id);
+        shoppingListName = dbHandler.getShoppingListName((int)id);
         this.setTitle(shoppingListName);
-    }
 
-    public void openAddItem(View view){
 
+        Cursor cursor = dbHandler.getShoppingListItems((int)id);
+
+        shoppingListItemsAdapter = new ShoppingListItems(this, cursor, 0);
+
+        itemsListView = (ListView) this.findViewById(R.id.itemListView);
+
+        itemsListView.setAdapter(shoppingListItemsAdapter);
+
+        toolbar.setSubtitle("Total Cost: " + dbHandler.getShopingListTotalCost((int)id));
        intent = new Intent(this, AddItem.class);
         intent.putExtra("_id", id);
         startActivity(intent);
@@ -61,6 +74,7 @@ public class ViewList extends AppCompatActivity {
                 intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 return true;
+
 
             case R.id.action_create_list:
                 intent = new Intent(this, CreateList.class);
