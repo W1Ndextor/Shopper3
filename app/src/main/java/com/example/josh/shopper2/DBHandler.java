@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHandler extends SQLiteOpenHelper {
 
 
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
     private static final String DATABASE_NAME = "shopper.db";
 
 
@@ -24,9 +24,9 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public static final String TABLE_SHOPPING_LIST_ITEM = "shoppinglistitem";
     public static final String COLUMN_ITEM_ID = "_id";
-    public static final String COLUMN_ITEM_NAME = "name";
-    public static final String COLUMN_ITEM_PRICE = "price";
-    public static final String COLUMN_ITEM_QUANTITY = "quantity";
+    public static final String COLUMN_ITEM_NAME = "item_name";
+    public static final String COLUMN_ITEM_PRICE = "item_price";
+    public static final String COLUMN_ITEM_QUANTITY = "item_quantity";
     public static final String COLUMN_ITEM_HAS = "item_has";
     public static final String COLUMN_ITEM_LIST_ID = "item_list_id";
 
@@ -143,7 +143,7 @@ public class DBHandler extends SQLiteOpenHelper {
         String dbString = "";
 
         String query = "SELECT * FROM " + TABLE_SHOPPING_LIST_ITEM  + " WHERE " + COLUMN_ITEM_LIST_ID + " = "  + listId;
-
+//test
         SQLiteDatabase db = getWritableDatabase();
 
         Cursor c = db.rawQuery(query, null);

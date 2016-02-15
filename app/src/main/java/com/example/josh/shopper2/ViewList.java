@@ -51,9 +51,7 @@ public class ViewList extends AppCompatActivity {
         itemsListView.setAdapter(shoppingListItemsAdapter);
 
         toolbar.setSubtitle("Total Cost: " + dbHandler.getShopingListTotalCost((int)id));
-       intent = new Intent(this, AddItem.class);
-        intent.putExtra("_id", id);
-        startActivity(intent);
+
 
     }
 

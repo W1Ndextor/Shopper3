@@ -26,7 +26,7 @@ public class ShoppingListItems extends CursorAdapter{
 
         ((TextView) view.findViewById(R.id.nameTextView)).setText(cursor.getString(cursor.getColumnIndex("item_name")));
         ((TextView) view.findViewById(R.id.priceTextView)).setText(cursor.getString(cursor.getColumnIndex("item_price")));
-        ((TextView) view.findViewById(R.id.quantitityTextView)).setText(cursor.getString(cursor.getColumnIndex("item_quantity")));
+        ((TextView) view.findViewById(R.id.quantityTextView)).setText(cursor.getString(cursor.getColumnIndex("item_quantity")));
         ((TextView) view.findViewById(R.id.hasTextView)).setText("Item Purchased? " + cursor.getString(cursor.getColumnIndex("item_has")));
     }
 }
