@@ -29,6 +29,14 @@
         <activity
             android:name=".AddItem"
             android:label="@string/title_activity_add_item"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ViewItem"
+            android:label="@string/title_activity_view_item"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Menu_View_Item"
+            android:label="@string/title_activity_menu__view__item"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

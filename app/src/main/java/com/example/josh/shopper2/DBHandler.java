@@ -30,7 +30,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String COLUMN_ITEM_HAS = "item_has";
     public static final String COLUMN_ITEM_LIST_ID = "item_list_id";
 
-    public DBHandler (Context context, SQLiteDatabase.CursorFactory factory){
+    public DBHandler(Context context, SQLiteDatabase.CursorFactory factory) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
     }
 
@@ -68,7 +68,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     }
 
-    public void addShoppingList(String name, String store, String date){
+    public void addShoppingList(String name, String store, String date) {
 
         ContentValues values = new ContentValues();
 
@@ -84,13 +84,13 @@ public class DBHandler extends SQLiteOpenHelper {
 
     }
 
-    public Cursor getShoppingLists(){
+    public Cursor getShoppingLists() {
         SQLiteDatabase db = getWritableDatabase();
 
         return db.rawQuery("SELECT * FROM " + TABLE_SHOPPING_LIST, null);
     }
 
-    public String getShoppingListName(int id){
+    public String getShoppingListName(int id) {
         String dbString = "";
 
         String query = "SELECT * FROM " + TABLE_SHOPPING_LIST + " WHERE " + COLUMN_LIST_ID + " = " + id;
@@ -101,9 +101,9 @@ public class DBHandler extends SQLiteOpenHelper {
 
         int numShoppingLists = c.getCount();
 
-        if(numShoppingLists >= 1){
+        if (numShoppingLists >= 1) {
             c.moveToFirst();
-            if ((c.getString(c.getColumnIndex("list_name")) != null)){
+            if ((c.getString(c.getColumnIndex("list_name")) != null)) {
                 dbString = c.getString(c.getColumnIndex("list_name"));
             }
 
@@ -112,7 +112,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return dbString;
     }
 
-    public void addItemToShoppingList (String name, Double price, Integer quantity, Integer listId){
+    public void addItemToShoppingList(String name, Double price, Integer quantity, Integer listId) {
 
 
         ContentValues values = new ContentValues();
@@ -131,18 +131,18 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public Cursor getShoppingListItems(Integer listId){
+    public Cursor getShoppingListItems(Integer listId) {
         SQLiteDatabase db = getWritableDatabase();
 
         return db.rawQuery("SELECT * FROM " + TABLE_SHOPPING_LIST_ITEM +
                 " WHERE " + COLUMN_ITEM_LIST_ID + " = " + listId, null);
     }
 
-    public String getShopingListTotalCost(int listId){
+    public String getShopingListTotalCost(int listId) {
 
         String dbString = "";
 
-        String query = "SELECT * FROM " + TABLE_SHOPPING_LIST_ITEM  + " WHERE " + COLUMN_ITEM_LIST_ID + " = "  + listId;
+        String query = "SELECT * FROM " + TABLE_SHOPPING_LIST_ITEM + " WHERE " + COLUMN_ITEM_LIST_ID + " = " + listId;
 //test
         SQLiteDatabase db = getWritableDatabase();
 
@@ -152,7 +152,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
         int numShoppingListItems = c.getCount();
 
-        if(numShoppingListItems >= 1){
+        if (numShoppingListItems >= 1) {
             c.moveToFirst();
             while (!c.isAfterLast()) {
                 totalCost += (c.getDouble(c.getColumnIndex("item_price")) *
@@ -165,5 +165,71 @@ public class DBHandler extends SQLiteOpenHelper {
         dbString = String.valueOf(totalCost);
         db.close();
         return dbString;
+    }
+
+    public int isItemUnpurchased(Integer itemID) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        String query = "SELECT * FROM " + TABLE_SHOPPING_LIST_ITEM +
+                " WHERE " + COLUMN_ITEM_HAS + " = \"false\" " +
+                " AND " + COLUMN_ITEM_ID + " = " + itemID;
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        return (cursor.getCount());
+    }
+
+    //hvhjvhjkv
+    public void updateItem(Integer itemId) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        String query = "UPDATE " + TABLE_SHOPPING_LIST_ITEM + "SET " +
+                COLUMN_ITEM_HAS + " = \"true\" " + " WHERE " +
+                COLUMN_ITEM_ID + " = " + itemId;
+
+        db.execSQL(query);
+
+        db.close();
+    }
+
+    public int getUnpurchasedItems(Integer listId) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        String query = "SELECT * FROM " + TABLE_SHOPPING_LIST_ITEM +
+                " WHERE " + COLUMN_ITEM_HAS + " = \"FALSE\" " +
+                " AND " + COLUMN_ITEM_LIST_ID + " = " + listId;
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        return (cursor.getCount());
+
+    }
+
+    public ShoppingListItem getShoppingListItem(Integer itemId) {
+
+        ShoppingListItem shoppingListItem = null;
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        String query = "SELECT * FROM " + TABLE_SHOPPING_LIST_ITEM + " WHERE " + COLUMN_ITEM_ID + " = " + itemId;
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        int numItems = cursor.getCount();
+        if (numItems >= 1) {
+
+            cursor.moveToFirst();
+            shoppingListItem = new ShoppingListItem(
+                    (cursor.getInt(cursor.getColumnIndex("_id"))),
+                    (cursor.getString(cursor.getColumnIndex("item_name"))),
+                    (cursor.getDouble(cursor.getColumnIndex("item_price"))),
+                    (cursor.getInt(cursor.getColumnIndex("item_quantity"))),
+                    (cursor.getString(cursor.getColumnIndex("item_has"))),
+                    (cursor.getInt(cursor.getColumnIndex("item_list_id")))
+            );
+
+        }
+        db.close();
+        return shoppingListItem;
     }
 }
