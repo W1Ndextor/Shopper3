@@ -156,7 +156,7 @@ public class DBHandler extends SQLiteOpenHelper {
             c.moveToFirst();
             while (!c.isAfterLast()) {
                 totalCost += (c.getDouble(c.getColumnIndex("item_price")) *
-                        (c.getInt(c.getColumnIndex("item_quanity"))));
+                        (c.getInt(c.getColumnIndex("item_quantity"))));
                 c.moveToNext();
 
             }
@@ -183,7 +183,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public void updateItem(Integer itemId) {
         SQLiteDatabase db = getWritableDatabase();
 
-        String query = "UPDATE " + TABLE_SHOPPING_LIST_ITEM + "SET " +
+        String query = "UPDATE " + TABLE_SHOPPING_LIST_ITEM + " SET " +
                 COLUMN_ITEM_HAS + " = \"true\" " + " WHERE " +
                 COLUMN_ITEM_ID + " = " + itemId;
 
@@ -232,4 +232,31 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
         return shoppingListItem;
     }
+
+    public void deleteShoppingListItem(Integer itemId){
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        String query = "DELETE FROM " +TABLE_SHOPPING_LIST_ITEM + " WHERE " + COLUMN_ITEM_ID + " = " + itemId;
+
+        db.execSQL(query);
+
+        db.close();
+
+    }
+
+    public void deleteShoppingList(Integer listID){
+        SQLiteDatabase db = getWritableDatabase();
+
+        String query1 = "DELETE FROM " + TABLE_SHOPPING_LIST_ITEM + " WHERE " + COLUMN_ITEM_LIST_ID + " = " + listID;
+
+        db.execSQL(query1);
+
+        String query2 = "DELETE FROM " + TABLE_SHOPPING_LIST + " WHERE " + COLUMN_LIST_ID + " = " + listID;
+
+       db.execSQL(query2);
+
+        db.close();
+    }
+
 }
