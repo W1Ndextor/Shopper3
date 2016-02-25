@@ -72,6 +72,14 @@ public class ViewList extends AppCompatActivity {
 
     }
 
+    public void openAddItem (View view){
+        intent = new Intent(this, AddItem.class);
+        intent.putExtra("_id", id);
+        startActivity(intent);
+    }
+
+
+
     public void updateItem (long id){
         if(dbHandler.isItemUnpurchased((int) id) != 0){
 
